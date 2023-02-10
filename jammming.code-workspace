@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.fontFamily": "FuraCode Nerd Font Mono",
+		"terminal.integrated.fontSize": 12,
+		"terminal.integrated.customGlyphs": true
+	}
+}
