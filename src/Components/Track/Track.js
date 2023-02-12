@@ -4,7 +4,7 @@ import './Track.css';
 export class Track extends React.Component {
 
     renderAction() {
-        // SHOULD THIS METHOD RETURN THIS JSX?
+        // SHOULD THIS METHOD 'RETURN' THIS JSX?
         <button className='Track-action'>{this.props.isRemoval ? '-' : '+'}</button>
     }
 

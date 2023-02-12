@@ -30,7 +30,7 @@ class App extends React.Component {
           id: 'id03'
         }
       ],
-      playlistName: 'Custom Playlist',
+      playlistName: 'Custom PlaylistName',
       playlistTracks: [
         {
           name: 'customTrack01',
@@ -52,7 +52,23 @@ class App extends React.Component {
         }
       ]
     };
+    this.addTrack = this.addTrack.bind(this);
   }
+  // addTrack: add song to the playlist state
+  addTrack(track) {
+    // is current song in the playlistTracks state?
+    if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+      return;
+    }
+    // add track to end of playlistTracks
+    this.setState((state, track) => {
+      return state.playlistTracks.push(track);
+    });
+
+  }
+
+
+
   render() {
     return (
       <div>
@@ -62,9 +78,9 @@ class App extends React.Component {
           <SearchBar />
           <div className="App-playlist">
             {/* <!-- Add a SearchResults component --> */}
-            <SearchResults searchResults={this.state.searchResults} />
+            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
             {/* <!-- Add a Playlist component --> */}
-            <Playlist />
+            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} />
           </div>
         </div>
       </div>
