@@ -61,12 +61,10 @@ class App extends React.Component {
       return;
     }
     // add track to end of playlistTracks
-    this.setState((state, track) => {
-      return state.playlistTracks.push(track);
+    this.setState((state) => {
+      return {playlistTracks: state.playlistTracks.push(track)};
     });
-
   }
-
 
 
   render() {
