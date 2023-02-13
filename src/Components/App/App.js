@@ -53,6 +53,7 @@ class App extends React.Component {
       ]
     };
     this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
   }
   // addTrack: add song to the playlist state
   addTrack(track) {
@@ -62,7 +63,23 @@ class App extends React.Component {
     }
     // add track to end of playlistTracks
     this.setState((state) => {
-      return {playlistTracks: state.playlistTracks.push(track)};
+      return { playlistTracks: state.playlistTracks.push(track) };
+    });
+  }
+  /* removeTrack 49.
+  In App.js create a method called removeTrack with the following functionality:
+
+  Accepts a track argument
+  Uses the track’s id property to filter it out of playlistTracks
+  Sets the new state of the playlist */
+
+  removeTrack(track) {
+    // delete this.state.playlistTracks.find(savedTrack => {
+    //   savedTrack.id === track.id;
+    // });
+
+    this.setState((state) => {
+      return { playlistTracks: delete state.playlistTracks.find(savedTrack => savedTrack.id === track.id)}
     });
   }
 
