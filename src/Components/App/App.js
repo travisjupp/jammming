@@ -61,11 +61,27 @@ class App extends React.Component {
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
       return;
     }
+    
+    console.log('this.state.playlistTracks',this.state.playlistTracks);
+
     // add track to end of playlistTracks
-    this.setState((state) => {
-      return { playlistTracks: state.playlistTracks.push(track) };
-    });
+    this.setState((state) => state.playlistTracks.push(track)); // pushes track twice
+    // this.setState((state) => state.playlistTracks.push(track));
+    
+    // try a this.setState that only updates the object
+    // this.setState(
+    //   {
+    //     playlistTracks: this.playlistTracks.push(track)
+    //   }
+    // );
+    // console.log('addTrack():this.state.playlistName',this.state.playlistName);
+    console.log('addTrack():this.state.playlistTracks:',this.state.playlistTracks);
+
+
   }
+
+  
+
   /* removeTrack 49.
   In App.js create a method called removeTrack with the following functionality:
 
