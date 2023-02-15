@@ -59,13 +59,21 @@ class App extends React.Component {
   addTrack(track) {
     // is current song in the playlistTracks state?
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+      console.log('guard clause ran');
       return;
     }
     
     console.log('this.state.playlistTracks',this.state.playlistTracks);
 
     // add track to end of playlistTracks
-    this.setState((state) => state.playlistTracks.push(track)); // pushes track twice
+
+    // this.setState((state) => state.playlistTracks.push(track)); // pushes track twice
+
+    // let newTracks = this.state.playlistTracks.filter(trackObj => trackObj.id === track.id);
+    // this.setState({playlistTracks: newTracks});
+
+    this.setState({playlistTracks: [...this.state.playlistTracks, track]});
+
     // this.setState((state) => state.playlistTracks.push(track));
     
     // try a this.setState that only updates the object
