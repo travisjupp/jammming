@@ -12,9 +12,11 @@ export class Track extends React.Component {
     // renderAction = (this.props.isRemoval ? <button className="Track-action" onClick={this.removeTrack}> - </button> : <button className="Track-action" onClick={this.addTrack}> + </button>
     // );
 
-    // renderAction() {
-    //     return this.props.isRemoval ? <button className="Track-action" onClick={this.removeTrack}> - </button> : <button className="Track-action" onClick={this.addTrack}> + </button>
-    // }
+    renderAction() {
+        return (this.props.isRemoval ?
+            <button className="Track-action" onClick={this.removeTrack}> - </button> :
+            <button className="Track-action" onClick={this.addTrack}> + </button>)
+    }
 
     // 45. Create an .addTrack() method in the Track component. Use it to add this.props.track to the playlist.
     addTrack() {
@@ -37,7 +39,8 @@ export class Track extends React.Component {
                     <h3>{this.props.track.name}{/* {<!-- track name will go here -->} */}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}{/* <!-- track artist will go here--> | <!-- track album will go here --> */}</p>
                 </div>
-                {this.props.isRemoval ? <button className="Track-action" onClick={this.removeTrack}> - </button> : <button className="Track-action" onClick={this.addTrack}> + </button>}
+                {/* {this.props.isRemoval ? <button className="Track-action" onClick={this.removeTrack}> - </button> : <button className="Track-action" onClick={this.addTrack}> + </button>} */}
+                {this.renderAction()}
                 {/* <button className="Track-action"><!-- + or - will go here --></button> */}
             </div>
         );
