@@ -59,36 +59,19 @@ class App extends React.Component {
   addTrack(track) {
     // is current song in the playlistTracks state?
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
-      console.log('guard clause ran');
+      console.log('guard clause ran: track exists');
       return;
     }
     
     console.log('this.state.playlistTracks',this.state.playlistTracks);
 
     // add track to end of playlistTracks
-
-    // this.setState((state) => state.playlistTracks.push(track)); // pushes track twice
-
-    // let newTracks = this.state.playlistTracks.filter(trackObj => trackObj.id === track.id);
-    // this.setState({playlistTracks: newTracks});
-
     this.setState({playlistTracks: [...this.state.playlistTracks, track]});
 
-    // this.setState((state) => state.playlistTracks.push(track));
-    
-    // try a this.setState that only updates the object
-    // this.setState(
-    //   {
-    //     playlistTracks: this.playlistTracks.push(track)
-    //   }
-    // );
-    // console.log('addTrack():this.state.playlistName',this.state.playlistName);
     console.log('addTrack():this.state.playlistTracks:',this.state.playlistTracks);
 
 
   }
-
-  
 
   /* removeTrack 49.
   In App.js create a method called removeTrack with the following functionality:
@@ -98,13 +81,11 @@ class App extends React.Component {
   Sets the new state of the playlist */
 
   removeTrack(track) {
-    // delete this.state.playlistTracks.find(savedTrack => {
-    //   savedTrack.id === track.id;
-    // });
-
-    this.setState((state) => {
-      return { playlistTracks: delete state.playlistTracks.find(savedTrack => savedTrack.id === track.id)}
-    });
+    // create new array with track removed
+    let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
+    // update state with new array
+    this.setState({playlistTracks: newPlaylistTracks});
+    console.log('newPlaylistTracks',newPlaylistTracks);
   }
 
 

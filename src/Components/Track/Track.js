@@ -18,9 +18,9 @@ export class Track extends React.Component {
 
     // 45. Create an .addTrack() method in the Track component. Use it to add this.props.track to the playlist.
     addTrack() {
-        console.log('this', this);
-        console.log('this.props.track', this.props.track);
-        console.log('this.props.onAdd', this.props.onAdd);
+        // console.log('this', this);
+        // console.log('this.props.track', this.props.track);
+        // console.log('this.props.onAdd', this.props.onAdd);
         this.props.onAdd(this.props.track);
     }
 
@@ -37,10 +37,8 @@ export class Track extends React.Component {
                     <h3>{this.props.track.name}{/* {<!-- track name will go here -->} */}</h3>
                     <p>{this.props.track.artist} | {this.props.track.album}{/* <!-- track artist will go here--> | <!-- track album will go here --> */}</p>
                 </div>
-                {/* {console.log(this.props.onAdd(this.props.track))} */}
-                {/* {renderAction} */}
                 {this.props.isRemoval ? <button className="Track-action" onClick={this.removeTrack}> - </button> : <button className="Track-action" onClick={this.addTrack}> + </button>}
-                <button className="Track-action">{/*<!-- + or - will go here -->*/}</button>
+                {/* <button className="Track-action"><!-- + or - will go here --></button> */}
             </div>
         );
     }
