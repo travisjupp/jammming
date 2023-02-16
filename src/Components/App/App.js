@@ -55,37 +55,22 @@ class App extends React.Component {
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
   }
-  // addTrack: add song to the playlist state
+  // 41. add song to playlist state
   addTrack(track) {
     // is current song in the playlistTracks state?
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
       console.log('guard clause ran: track exists');
       return;
     }
-    
-    console.log('this.state.playlistTracks',this.state.playlistTracks);
-
     // add track to end of playlistTracks
     this.setState({playlistTracks: [...this.state.playlistTracks, track]});
-
-    console.log('addTrack():this.state.playlistTracks:',this.state.playlistTracks);
-
-
   }
-
-  /* removeTrack 49.
-  In App.js create a method called removeTrack with the following functionality:
-
-  Accepts a track argument
-  Uses the track’s id property to filter it out of playlistTracks
-  Sets the new state of the playlist */
-
+  // 49. remove track from playlist state 
   removeTrack(track) {
     // create new array with track removed
     let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
     // update state with new array
     this.setState({playlistTracks: newPlaylistTracks});
-    console.log('newPlaylistTracks',newPlaylistTracks);
   }
 
 
