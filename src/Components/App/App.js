@@ -36,25 +36,30 @@ class App extends React.Component {
           name: 'customTrack01',
           artist: 'customArtist01',
           album: 'customAlbum01',
-          id: 'customID01'
+          id: 'customID01',
+          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
         },
         {
           name: 'customTrack02',
           artist: 'customArtist02',
           album: 'customAlbum02',
-          id: 'customID02'
+          id: 'customID02',
+          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
         },
         {
           name: 'customTrack03',
           artist: 'customArtist03',
           album: 'customAlbum03',
-          id: 'customID03'
+          id: 'customID03',
+          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
         }
       ]
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
+    this.search = this.search.bind(this);
   }
   // 41. add song to playlist state
   addTrack(track) {
@@ -78,6 +83,26 @@ class App extends React.Component {
     this.setState({playlistName: name});
     console.log('playlistName:', this.state.playlistName);
   }
+  // 63. generate array of `uri` values called `trackURIs` from `playlistTracks`
+  savePlaylist() {
+    // let trackURIs = [];
+    // this.state.playlistTracks.forEach(currentTracks => {
+    //   trackURIs.push(currentTracks.uri);
+    // });
+    // console.log('trackURIs',trackURIs);
+    
+    // let trackURIs = Object.values(this.state.playlistTracks[0].uri);
+    let trackURIs = this.state.playlistTracks.map(track => track.uri);
+    // let trackURIs = this.state.playlistTracks.map(({uri}) => uri);
+    
+    console.log('trackURIs',trackURIs);
+    console.log('playlistTracks',this.state.playlistTracks);
+
+  }
+  // 67. accept a search term and log it to the console
+  search(searchTerm) {
+    console.log(searchTerm);
+  }
   
   render() {
     return (
@@ -85,12 +110,12 @@ class App extends React.Component {
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
           {/* <!-- Add a SearchBar component --> */}
-          <SearchBar />
+          <SearchBar onSearch={this.search} />
           <div className="App-playlist">
             {/* <!-- Add a SearchResults component --> */}
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
             {/* <!-- Add a Playlist component --> */}
-            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} />
+            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />
           </div>
         </div>
       </div>
