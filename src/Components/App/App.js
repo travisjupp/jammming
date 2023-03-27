@@ -4,6 +4,7 @@ import './App.css';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
 import { Playlist } from '../Playlist/Playlist';
+import Spotify from '../../util/Spotify';
 
 
 class App extends React.Component {
@@ -69,41 +70,65 @@ class App extends React.Component {
       return;
     }
     // add track to end of playlistTracks
-    this.setState({playlistTracks: [...this.state.playlistTracks, track]});
+    this.setState({ playlistTracks: [...this.state.playlistTracks, track] });
   }
   // 49. remove track from playlist state 
   removeTrack(track) {
     // create new array with track removed
     let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
     // update state with new array
-    this.setState({playlistTracks: newPlaylistTracks});
+    this.setState({ playlistTracks: newPlaylistTracks });
   }
   // 57. update playlist name
   updatePlaylistName(name) {
-    this.setState({playlistName: name});
+    this.setState({ playlistName: name });
     console.log('playlistName:', this.state.playlistName);
   }
   // 63. generate array of `uri` values called `trackURIs` from `playlistTracks`
   savePlaylist() {
-    // let trackURIs = [];
-    // this.state.playlistTracks.forEach(currentTracks => {
-    //   trackURIs.push(currentTracks.uri);
-    // });
-    // console.log('trackURIs',trackURIs);
-    
-    // let trackURIs = Object.values(this.state.playlistTracks[0].uri);
     let trackURIs = this.state.playlistTracks.map(track => track.uri);
     // let trackURIs = this.state.playlistTracks.map(({uri}) => uri);
-    
-    console.log('trackURIs',trackURIs);
-    console.log('playlistTracks',this.state.playlistTracks);
 
+    console.log('trackURIs', trackURIs);
+    console.log('playlistTracks', this.state.playlistTracks);
+
+    // 95. In App.js update the .savePlaylist() method to call Spotify.savePlaylist().
+
+    // After you call Spotify.savePlaylist(), reset the state of playlistName to 'New Playlist' and playlistTracks to an empty array.
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
+    this.setState(
+      {
+        playlistName: 'New Playlist',
+        playlistTracks: []
+      }
+    );
   }
   // 67. accept a search term and log it to the console
   search(searchTerm) {
-    console.log(searchTerm);
+    // 88. Update the state of searchResults with the value resolved from Spotify.search()‘s promise
+    Spotify.search(searchTerm)
+      // .then(data => data.json())
+      .then(data => {
+        if (data.tracks.items.length > 0) {
+          let searchResult = data.tracks.items.map((track) => {
+            return {
+              'id': track.id,
+              'name': track.name,
+              'artist': track.artists[0].name,
+              'album': track.album.name,
+              'uri': track.uri,
+            }
+          });
+          this.setState(
+            { searchResults: searchResult }
+          );
+        } else {
+          return [];
+        }
+      })
+      .catch(error => console.log('Error: ', error));
   }
-  
+
   render() {
     return (
       <div>
