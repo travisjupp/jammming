@@ -1,11 +1,10 @@
 import { clientIDval } from '../private/keys';
 let accessToken;
-let tokenExpiration;
+
 const clientID = clientIDval;
 const redirectURI = 'http://localhost:3000/';
 const baseURL = 'https://api.spotify.com';
 
-console.log('accessToken:', accessToken ? true : false, 'tokenExpiration:', tokenExpiration * 1000);
 
 
 
@@ -30,7 +29,7 @@ const Spotify = {
             url += '&client_id=' + encodeURIComponent(clientID);
             url += '&scope=' + encodeURIComponent(scope);
             url += '&redirect_uri=' + encodeURIComponent(redirectURI);
-            url += '&state=' + encodeURIComponent(state);
+            // url += '&state=' + encodeURIComponent(state);
 
             window.location = url; // redirects after this
         }
@@ -42,14 +41,7 @@ const Spotify = {
         if (!accessToken) {
             this.getAccessToken();
         }
-        // localStorage.setItem(stateKey, 'invalid_state_val'); // uncomment to test state
-        if (accessToken && (state == null || state !== storedState)) {
-            console.log(`Error: state doesn't match! \n 
-            state from URL         : ${state} \n 
-            state from localStorage: ${storedState} `);
-        } else {
-            console.log(`Removing stored state, fetching track: ${term}`)
-            localStorage.removeItem(stateKey);
+        
             try {
                 let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
                         `, {
@@ -67,7 +59,7 @@ const Spotify = {
             } catch (e) {
                 console.log(e);
             }
-        }
+        
 
     },
     // 89. savePlaylist writes custom playlist to Spotify account
@@ -163,7 +155,7 @@ if (window.location.hash.substring(1).match(/access_token=([^&]*)/)) {
     // window.location.href.match(/access_token=([^&]*)/)[1]
     accessToken = window.location.hash.substring(1).match(/access_token=([^&]*)/)[1]; // '<token>'
 
-    tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
+    let tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
 
     // set access token to expire and clear URL
     window.setTimeout(() => {
