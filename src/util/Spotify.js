@@ -1,9 +1,6 @@
 import { clientIDval } from '../private/keys';
 let accessToken;
 let tokenExpiration;
-let state;
-let stateKey = 'spotify_auth_state';
-let storedState;
 const clientID = clientIDval;
 const redirectURI = 'http://localhost:3000/';
 const baseURL = 'https://api.spotify.com';
@@ -21,26 +18,12 @@ const Spotify = {
         }
 
         // build URL and get auth key
+
+        // returns same value, replace?
+        // window.location.href.match(/access_token=([^&]*)/)[1]
         if (!window.location.hash.substring(1).match(/access_token=([^&]*)/) && !accessToken) {
             console.log('building auth URL...');
-
-            function generateRandomString(length) {
-                let text = '';
-                const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-                for (let i = 0; i < length; i++) {
-                    text += possible.charAt(Math.floor(Math.random() * possible.length));
-                }
-                return text;
-            };
-
-            console.log('generating state, saving...')
-            let state = generateRandomString(16); // generate state
-            localStorage.setItem(stateKey, state);// save state
-            console.log(`state = ${state}, \n stored: ${localStorage.getItem(stateKey)}`)
-
             const scope = 'playlist-modify-public';
-            // const scope = 'user-read-private user-read-email';
 
             let url = 'https://accounts.spotify.com/authorize';
             url += '?response_type=token';
@@ -89,11 +72,13 @@ const Spotify = {
     },
     // 89. savePlaylist writes custom playlist to Spotify account
     async savePlaylist(playlistName, trackURIs) {
+        // 
+        // if (!playlistName || !trackURIs.length) { return; }
         if (!(playlistName && trackURIs)) { // 90. check values are saved. if not, return
             console.log('savePlaylist params false, early return');
             return;
         }
-        let spAccessToken = accessToken;
+        let spAccessToken = accessToken; // let accessToken = this.getAccessToken();
         let headers = {
             'Authorization': 'Bearer ' + spAccessToken,
         }
@@ -173,14 +158,12 @@ const Spotify = {
 // this runs getAccessToken on first load and saves token/ sets timeout on redirect
 
 if (window.location.hash.substring(1).match(/access_token=([^&]*)/)) {
-    console.log('saving access token, expiration, state from URL...');
+    console.log('saving access token, expiration from URL...');
+    // returns same value, replace?
+    // window.location.href.match(/access_token=([^&]*)/)[1]
     accessToken = window.location.hash.substring(1).match(/access_token=([^&]*)/)[1]; // '<token>'
-    tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
-    state = window.location.hash.substring(1).match(/state=([^&]*)/)[1];
-    storedState = localStorage.getItem(stateKey);
 
-    console.log('state from URL         ', state);
-    console.log('state from localStorage', storedState);
+    tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
 
     // set access token to expire and clear URL
     window.setTimeout(() => {
