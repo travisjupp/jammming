@@ -1,8 +1,8 @@
-import { clientIDval } from '../private/keys';
-let accessToken;
 
+import { clientIDval } from '../private/keys';
 const clientID = clientIDval;
 const redirectURI = 'http://localhost:3000/';
+let accessToken;
 const baseURL = 'https://api.spotify.com';
 
 
@@ -17,10 +17,17 @@ const Spotify = {
         }
 
         // build URL and get auth key
-
-        // returns same value, replace?
-        // window.location.href.match(/access_token=([^&]*)/)[1]
-        if (!window.location.hash.substring(1).match(/access_token=([^&]*)/) && !accessToken) {
+        const accessTokenFromURL = window.location.href.match(/access_token=([^&]*)/);
+        const tokenExpirationFromURL = window.location.href.match(/expires_in=([^&]*)/);
+        
+        if (accessTokenFromURL && tokenExpirationFromURL) {
+            accessToken = accessTokenFromURL[1];
+            const tokenExpiration = Number(tokenExpirationFromURL[1]);
+            // clear parameters, allows grab new token at expiration
+            window.setTimeout(() => accessToken = '', tokenExpiration * 1000);
+            window.history.pushState('Access Token', null, '/');
+            return accessToken;
+        } else {
             console.log('building auth URL...');
             const scope = 'playlist-modify-public';
 
@@ -33,14 +40,12 @@ const Spotify = {
 
             window.location = url; // redirects after this
         }
-
     },
     // 85. In the Spotify object, add a method called search that accepts a parameter for the user’s search term.
     // .search() returns a promise that will eventually resolve to the list of tracks from the search.
     async search(term) {
-        if (!accessToken) {
-            this.getAccessToken();
-        }
+        const accessToken = Spotify.getAccessToken();
+        console.log(accessToken);
         
             try {
                 let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
@@ -70,9 +75,9 @@ const Spotify = {
             console.log('savePlaylist params false, early return');
             return;
         }
-        let spAccessToken = accessToken; // let accessToken = this.getAccessToken();
+        let accessToken = Spotify.getAccessToken();
         let headers = {
-            'Authorization': 'Bearer ' + spAccessToken,
+            'Authorization': 'Bearer ' + accessToken,
         }
         // 92. request Spotify username. Convert the response to JSON and save the response id parameter to the user’s ID variable.
         let userID;
@@ -160,11 +165,11 @@ if (window.location.hash.substring(1).match(/access_token=([^&]*)/)) {
     // set access token to expire and clear URL
     window.setTimeout(() => {
         accessToken = ''; // clear token
-        window.history.pushState('Access Token', null, '/'); // clear URL
         console.log('clearToken ran');
         console.log('calling getAccessToken');
         Spotify.getAccessToken(); // replace expired token
     }, tokenExpiration * 1000);
+    window.history.pushState('Access Token', null, '/'); // clear URL
 } else {
     console.log('Access token not in URL running getAccessToken...');
     Spotify.getAccessToken();
