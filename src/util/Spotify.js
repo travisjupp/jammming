@@ -19,7 +19,7 @@ const Spotify = {
         // build URL and get auth key
         const accessTokenFromURL = window.location.href.match(/access_token=([^&]*)/);
         const tokenExpirationFromURL = window.location.href.match(/expires_in=([^&]*)/);
-        
+
         if (accessTokenFromURL && tokenExpirationFromURL) {
             accessToken = accessTokenFromURL[1];
             const tokenExpiration = Number(tokenExpirationFromURL[1]);
@@ -45,32 +45,40 @@ const Spotify = {
     // .search() returns a promise that will eventually resolve to the list of tracks from the search.
     async search(term) {
         const accessToken = Spotify.getAccessToken();
-        console.log(accessToken);
-        
-            try {
-                let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
+
+        try {
+            let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
                         `, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken,
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                }
+            });
+            let data = await response.json();
+            if (!response.ok) {
+                throw new Error(`${data.error.status} ${data.error.message}`)
+            };
+            if (data.tracks.items.length > 0) {
+                return data.tracks.items.map((track) => {
+                    return {
+                        'id': track.id,
+                        'name': track.name,
+                        'artist': track.artists[0].name,
+                        'album': track.album.name,
+                        'uri': track.uri,
                     }
                 });
-                let data = await response.json();
-                if (!response.ok) {
-                    throw new Error(`${data.error.status} ${data.error.message}`)
-                };
-                return data;
-
-            } catch (e) {
-                console.log(e);
+            } else {
+                return [];
             }
-        
+        } catch (e) {
+            console.log(e);
+        }
+
 
     },
     // 89. savePlaylist writes custom playlist to Spotify account
     async savePlaylist(playlistName, trackURIs) {
-        // 
-        // if (!playlistName || !trackURIs.length) { return; }
         if (!(playlistName && trackURIs)) { // 90. check values are saved. if not, return
             console.log('savePlaylist params false, early return');
             return;
