@@ -141,20 +141,20 @@ const Spotify = {
 // save access token, expiration from URL
 // this runs getAccessToken on first load and saves token/ sets timeout on redirect
 
-if (window.location.href.match(/access_token=([^&]*)/)) {
-    console.log('saving access token, expiration from URL...');
-    accessToken = window.location.href.match(/access_token=([^&]*)/)[1]; // '<token>'
-    let tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
+// if (window.location.href.match(/access_token=([^&]*)/)) {
+//     console.log('saving access token, expiration from URL...');
+//     accessToken = window.location.href.match(/access_token=([^&]*)/)[1]; // '<token>'
+//     const tokenExpiration = Number(window.location.href.match(/expires_in=([^&]*)/)[1]); // '3600'
 
-    // set access token to expire and clear URL
-    window.setTimeout(() => {
-        accessToken = ''; // clear token
-        Spotify.getAccessToken(); // replace expired token
-    }, tokenExpiration * 1000);
-    window.history.pushState('Access Token', null, '/'); // clear URL
-} else {
-    console.log('Access token not in URL running getAccessToken...');
-    Spotify.getAccessToken();
-}
+//     // set access token to expire and clear URL
+//     window.setTimeout(() => {
+//         accessToken = ''; // clear token
+//         // Spotify.getAccessToken(); // replace expired token
+//     }, tokenExpiration * 1000);
+//     window.history.pushState('Access Token', null, '/'); // clear URL
+// } else {
+//     console.log('Access token not in URL running getAccessToken...');
+//     Spotify.getAccessToken();
+// }
 
 export default Spotify;
