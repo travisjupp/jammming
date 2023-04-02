@@ -106,40 +106,17 @@ class App extends React.Component {
   // 67. accept a search term and log it to the console
   search(searchTerm) {
     // 88. Update the state of searchResults with the value resolved from Spotify.search()‘s promise
-
-
-    // Spotify.search(searchTerm)
-
-    //   .then(data => {
-    //     if (data.tracks.items.length > 0) {
-    //       let searchResult = data.tracks.items.map((track) => {
-    //         return {
-    //           'id': track.id,
-    //           'name': track.name,
-    //           'artist': track.artists[0].name,
-    //           'album': track.album.name,
-    //           'uri': track.uri,
-    //         }
-    //       });
-    //       this.setState(
-    //         { searchResults: searchResult }
-    //       );
-    //     } else {
-    //       return [];
-    //     }
-    //   })
-    //   .catch(error => console.log('Error: ', error));
-    Spotify.search(searchTerm).then(searchResult => {
-      this.setState(
-        { searchResults: searchResult }
-      );
-    }
-    );
-
-
-
-
-
+    Spotify.search(searchTerm)
+      .then(searchResult => {
+        if(searchResult === undefined) {
+          throw new Error('Error: searchResult undefined');
+        }
+        this.setState(
+          { searchResults: searchResult }
+        );
+      }
+      )
+      .catch(error => { console.log(error) });
   }
 
   render() {

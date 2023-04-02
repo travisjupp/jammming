@@ -5,9 +5,6 @@ const redirectURI = 'http://localhost:3000/';
 let accessToken;
 const baseURL = 'https://api.spotify.com';
 
-
-
-
 // Spotify module
 const Spotify = {
     getAccessToken() { // 78. users access token set? return value if so
@@ -23,6 +20,7 @@ const Spotify = {
         if (accessTokenFromURL && tokenExpirationFromURL) {
             accessToken = accessTokenFromURL[1];
             const tokenExpiration = Number(tokenExpirationFromURL[1]);
+
             // clear parameters, allows grab new token at expiration
             window.setTimeout(() => accessToken = '', tokenExpiration * 1000);
             window.history.pushState('Access Token', null, '/');
@@ -45,7 +43,6 @@ const Spotify = {
     // .search() returns a promise that will eventually resolve to the list of tracks from the search.
     async search(term) {
         const accessToken = Spotify.getAccessToken();
-
         try {
             let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
                         `, {
@@ -74,8 +71,6 @@ const Spotify = {
         } catch (e) {
             console.log(e);
         }
-
-
     },
     // 89. savePlaylist writes custom playlist to Spotify account
     async savePlaylist(playlistName, trackURIs) {
@@ -95,19 +90,13 @@ const Spotify = {
             if (!response.ok) {
                 throw new Error(`Requesting username. ${data.error.status} ${data.error.message}`);
             };
-            // save id to userID var
             userID = data.id;
-            console.log('userID: ', userID);
         } catch (e) {
             console.log(e);
         }
-
         // 93. Use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
-
         // Use the Spotify playlist endpoints to find a request that creates a new playlist.
-
         // Set the playlist name to the value passed into the method.
-
         // Convert the response to JSON and save the response id parameter to a variable called playlistID.
         let playlistID;
         try {
@@ -120,24 +109,16 @@ const Spotify = {
             });
             let data = await response.json();
             if (!response.ok) {
-                // console.log(response.status);
                 throw new Error(`Creating playlist. ${data.error.status} ${data.error.message}`);
             };
-            // save playlist id to playlistID var
             playlistID = data.id;
-            console.log('playlistID ', playlistID);
-
         } catch (e) {
             console.log(e);
         }
         // 94. Use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
-
         // Use the Spotify playlist endpoints to find a request that adds tracks to a playlist.
-
         // Set the URIs parameter to an array of track URIs passed into the method.
-
         // Convert the response to JSON and save the response id parameter to a variable called playlistID.
-
         try {
             let response = await fetch(`${baseURL}/v1/playlists/${playlistID}/tracks`, {
                 method: 'POST',
@@ -151,30 +132,23 @@ const Spotify = {
                 throw new Error(`Adding playlist tracks. ${data.error.status} ${data.error.message}`);
             };
             playlistID = data.snapshot_id;
-            console.log('playlistID', playlistID);
-
         } catch (e) {
             console.log(e);
         }
     }
 }
 
-// save access token, expiration, and state from URL
+// save access token, expiration from URL
 // this runs getAccessToken on first load and saves token/ sets timeout on redirect
 
-if (window.location.hash.substring(1).match(/access_token=([^&]*)/)) {
+if (window.location.href.match(/access_token=([^&]*)/)) {
     console.log('saving access token, expiration from URL...');
-    // returns same value, replace?
-    // window.location.href.match(/access_token=([^&]*)/)[1]
-    accessToken = window.location.hash.substring(1).match(/access_token=([^&]*)/)[1]; // '<token>'
-
+    accessToken = window.location.href.match(/access_token=([^&]*)/)[1]; // '<token>'
     let tokenExpiration = parseInt(window.location.hash.substring(1).match(/expires_in=([^&]*)/)[1]); // '3600'
 
     // set access token to expire and clear URL
     window.setTimeout(() => {
         accessToken = ''; // clear token
-        console.log('clearToken ran');
-        console.log('calling getAccessToken');
         Spotify.getAccessToken(); // replace expired token
     }, tokenExpiration * 1000);
     window.history.pushState('Access Token', null, '/'); // clear URL
