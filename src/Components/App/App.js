@@ -12,48 +12,48 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [
-        {
-          name: 'track01',
-          artist: 'artist01',
-          album: 'album01',
-          id: 'id01'
-        },
-        {
-          name: 'track02',
-          artist: 'artist02',
-          album: 'album02',
-          id: 'id02'
-        },
-        {
-          name: 'track03',
-          artist: 'artist03',
-          album: 'album03',
-          id: 'id03'
-        }
+        // {
+        //   name: 'track01',
+        //   artist: 'artist01',
+        //   album: 'album01',
+        //   id: 'id01'
+        // },
+        // {
+        //   name: 'track02',
+        //   artist: 'artist02',
+        //   album: 'album02',
+        //   id: 'id02'
+        // },
+        // {
+        //   name: 'track03',
+        //   artist: 'artist03',
+        //   album: 'album03',
+        //   id: 'id03'
+        // }
       ],
       playlistName: 'Custom PlaylistName',
       playlistTracks: [
-        {
-          name: 'customTrack01',
-          artist: 'customArtist01',
-          album: 'customAlbum01',
-          id: 'customID01',
-          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
-        },
-        {
-          name: 'customTrack02',
-          artist: 'customArtist02',
-          album: 'customAlbum02',
-          id: 'customID02',
-          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
-        },
-        {
-          name: 'customTrack03',
-          artist: 'customArtist03',
-          album: 'customAlbum03',
-          id: 'customID03',
-          uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
-        }
+        // {
+        //   name: 'customTrack01',
+        //   artist: 'customArtist01',
+        //   album: 'customAlbum01',
+        //   id: 'customID01',
+        //   uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
+        // },
+        // {
+        //   name: 'customTrack02',
+        //   artist: 'customArtist02',
+        //   album: 'customAlbum02',
+        //   id: 'customID02',
+        //   uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
+        // },
+        // {
+        //   name: 'customTrack03',
+        //   artist: 'customArtist03',
+        //   album: 'customAlbum03',
+        //   id: 'customID03',
+        //   uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
+        // }
       ]
     };
     this.addTrack = this.addTrack.bind(this);
