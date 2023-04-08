@@ -1,4 +1,4 @@
-source ./private/scriptData.sh #userID, authToken
+source ./src/private/scriptData.sh #userID, authToken
 
 # get recommendations
 # ex: bash spotify.sh getrecs 4NHQUGzhtTLFvgF5SZesLK
