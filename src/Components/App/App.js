@@ -61,6 +61,8 @@ class App extends React.Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.moveTrackUp = this.moveTrackUp.bind(this);
+    this.moveTrackDown = this.moveTrackDown.bind(this);
   }
   // 41. add song to playlist state
   addTrack(track) {
@@ -108,7 +110,7 @@ class App extends React.Component {
     // 88. Update the state of searchResults with the value resolved from Spotify.search()‘s promise
     Spotify.search(searchTerm)
       .then(searchResult => {
-        if(searchResult === undefined) {
+        if (searchResult === undefined) {
           throw new Error('Error: searchResult undefined');
         }
         this.setState(
@@ -117,6 +119,29 @@ class App extends React.Component {
       }
       )
       .catch(error => { console.log(error) });
+  }
+
+  // Move playlist tracks
+  moveTrackUp(track) {
+    let origTrackPosition = this.state.playlistTracks.findIndex(currentTracks => currentTracks.id === track.id);
+    let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
+    let newTrackPosition = origTrackPosition - 1;
+    if (newTrackPosition < 0 || newTrackPosition > this.state.playlistTracks.length) {
+      return;
+    };
+    newPlaylistTracks.splice(newTrackPosition, 0, track);
+    this.setState({ playlistTracks: newPlaylistTracks });
+  }
+
+  moveTrackDown(track) {
+    let origTrackPosition = this.state.playlistTracks.findIndex(currentTracks => currentTracks.id === track.id);
+    let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
+    let newTrackPostion = origTrackPosition + 1;
+    if (newTrackPostion < 0 || newTrackPostion > this.state.playlistTracks.length) {
+      return;
+    };
+    newPlaylistTracks.splice(newTrackPostion, 0, track);
+    this.setState({ playlistTracks: newPlaylistTracks });
   }
 
   render() {
@@ -130,7 +155,8 @@ class App extends React.Component {
             {/* <!-- Add a SearchResults component --> */}
             <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
             {/* <!-- Add a Playlist component --> */}
-            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} />
+            <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} onRemove={this.removeTrack} onNameChange={this.updatePlaylistName} onSave={this.savePlaylist} onMoveUp={this.moveTrackUp} onMoveDown={this.moveTrackDown}
+            />
           </div>
         </div>
       </div>

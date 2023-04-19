@@ -6,13 +6,31 @@ export class Track extends React.Component {
         super(props);
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
-
+        this.trackUp = this.trackUp.bind(this);
+        this.trackDown = this.trackDown.bind(this);
     }
     // 27. display add/remove button
     renderAction() {
-        return (this.props.isRemoval ?
-            <button className="Track-action" onClick={this.removeTrack}> - </button> :
-            <button className="Track-action" onClick={this.addTrack}> + </button>)
+        return (
+            !this.props.isRemoval ?
+            <button className="Track-action" onClick={this.addTrack}> + </button> :
+            this.props.isFirstTrack ?
+            <>
+            <button className="Track-action" onClick={this.trackDown}>&darr;</button>
+            <button className="Track-action" onClick={this.removeTrack}> - </button>
+            </> :
+            this.props.isLastTrack ?
+            <>
+            <button className="Track-action" onClick={this.trackUp}>&uarr;</button><button className="Track-action" onClick={this.removeTrack}> - </button>
+            </> :
+
+            <>
+            <button className="Track-action" onClick={this.trackUp}>&uarr;</button>
+            <button className="Track-action" onClick={this.trackDown}>&darr;</button>
+            <button className="Track-action" onClick={this.removeTrack}> - </button>
+            </> 
+
+        )
     }
     // 45. add this.props.track to the playlist.
     addTrack() {
@@ -21,6 +39,15 @@ export class Track extends React.Component {
     // 53. remove this.props.track from the playlist.
     removeTrack() {
         this.props.onRemove(this.props.track);
+    }
+
+    // Move track handlers
+    trackUp() {
+        this.props.onMoveUp(this.props.track);
+    }
+
+    trackDown() {
+        this.props.onMoveDown(this.props.track);
     }
 
     render() {

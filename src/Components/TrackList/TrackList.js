@@ -17,10 +17,10 @@ export class TrackList extends React.Component {
 
                     // tag first / last track in array using props
                     return this.props.tracks.indexOf(track) === 0 ?
-                        <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} firstTrack={true} >{track}</Track> :
+                        <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} isFirstTrack={true} onMoveDown={this.props.onMoveDown}>{track}</Track> :
                         this.props.tracks.indexOf(track) === this.props.tracks.length - 1 ?
-                            <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} lastTrack={true} >{track}</Track> :
-                            <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} >{track}</Track>
+                            <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} isLastTrack={true}  onMoveUp={this.props.onMoveUp}>{track}</Track> :
+                            <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} onMoveUp={this.props.onMoveUp} onMoveDown={this.props.onMoveDown}>{track}</Track>
 
                     // return <Track track={track} key={track.id} onAdd={this.props.onAdd} onRemove={this.props.onRemove} isRemoval={this.props.isRemoval} >{track}</Track>
                 })}

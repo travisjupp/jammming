@@ -10,9 +10,10 @@ const Spotify = {
     getAccessToken() { // 78. users access token set? return value if so
         if (accessToken) {
             console.log('returning access token...');
+            console.log(accessToken);
             return accessToken;
         }
-
+        
         // build URL and get auth key
         const accessTokenFromURL = window.location.href.match(/access_token=([^&]*)/);
         const tokenExpirationFromURL = window.location.href.match(/expires_in=([^&]*)/);
