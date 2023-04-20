@@ -24,12 +24,28 @@ echo "Running $1"
     fi
 
 # create playlist
+# ex: bash spotify.sh createplist "new plist" "new desc"
 elif [ $1 = "createplist" ]
 then
+playlistName=$2
+playlistDesc=$3
 echo "Running $1"
 exec curl -H "Authorization: Bearer $authToken" \
--H "Content-Type: application/json" -d '{"name":"playlistName"}' \
+-H "Content-Type: application/json" -d "{\"name\":\"$playlistName\",\"description\":\"$playlistDesc\"}" \
 https://api.spotify.com/v1/users/$userID/playlists
+
+# update playlist
+# ex: bash spotify.sh updateplist 25fHlVRDZZNu0suksCNHq5 2 0 1
+elif [ $1 = "updateplist" ]
+then
+playlistID=$2
+echo "Running $1"
+exec curl -X PUT https://api.spotify.com/v1/playlists/$playlistID/tracks \
+-H "Authorization: Bearer $authToken" \
+-H "Content-Type: application/json" \
+-d "{\"range_start\":$3,\"insert_before\":$4,\"range_length\":$5}"
+
+
 
 # get user playlists
 elif [ $1 = "getplist" ]
@@ -74,3 +90,4 @@ https://api.spotify.com/v1/tracks\
 else
 echo "Command not found"
 fi
+``
