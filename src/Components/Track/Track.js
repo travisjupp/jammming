@@ -13,22 +13,22 @@ export class Track extends React.Component {
     renderAction() {
         return (
             !this.props.isRemoval ?
-            <button className="Track-action" onClick={this.addTrack}> + </button> :
-            this.props.isFirstTrack ?
-            <>
-            <button className="Track-action" onClick={this.trackDown}>&darr;</button>
-            <button className="Track-action" onClick={this.removeTrack}> - </button>
-            </> :
-            this.props.isLastTrack ?
-            <>
-            <button className="Track-action" onClick={this.trackUp}>&uarr;</button><button className="Track-action" onClick={this.removeTrack}> - </button>
-            </> :
+                <button className="Track-action" onClick={this.addTrack}> + </button> :
+                this.props.isFirstTrack ?
+                    <>
+                        <button className="Track-action" onClick={this.trackDown}>&darr;</button>
+                        <button className="Track-action" onClick={this.removeTrack}> - </button>
+                    </> :
+                    this.props.isLastTrack ?
+                        <>
+                            <button className="Track-action" onClick={this.trackUp}>&uarr;</button><button className="Track-action" onClick={this.removeTrack}> - </button>
+                        </> :
 
-            <>
-            <button className="Track-action" onClick={this.trackUp}>&uarr;</button>
-            <button className="Track-action" onClick={this.trackDown}>&darr;</button>
-            <button className="Track-action" onClick={this.removeTrack}> - </button>
-            </> 
+                        <>
+                            <button className="Track-action" onClick={this.trackUp}>&uarr;</button>
+                            <button className="Track-action" onClick={this.trackDown}>&darr;</button>
+                            <button className="Track-action" onClick={this.removeTrack}> - </button>
+                        </>
 
         )
     }

@@ -113,6 +113,7 @@ const Spotify = {
                 throw new Error(`Creating playlist. ${data.error.status} ${data.error.message}`);
             };
             playlistID = data.id;
+            console.log('playlistID', playlistID);
         } catch (e) {
             console.log(e);
         }
@@ -133,6 +134,7 @@ const Spotify = {
                 throw new Error(`Adding playlist tracks. ${data.error.status} ${data.error.message}`);
             };
             playlistID = data.snapshot_id;
+            console.log('snapshot_id', playlistID);
         } catch (e) {
             console.log(e);
         }

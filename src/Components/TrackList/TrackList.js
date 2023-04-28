@@ -11,8 +11,8 @@ export class TrackList extends React.Component {
                 {/* <!-- You will add a map method that renders a set of Track components  --> */}
                 {this.props.tracks.map(track => {
 
-                    console.log('first', track.name, this.props.tracks.indexOf(track) === 0);
-                    console.log('last', track.name, this.props.tracks.indexOf(track) === this.props.tracks.length - 1);
+                    // console.log('first', track.name, this.props.tracks.indexOf(track) === 0);
+                    // console.log('last', track.name, this.props.tracks.indexOf(track) === this.props.tracks.length - 1);
 
 
                     // tag first / last track in array using props
