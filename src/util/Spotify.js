@@ -19,7 +19,7 @@ const storeClientId = () => {
     }
     return localStorage.getItem('clientID');
 }
-storeClientId();
+// storeClientId();
 const clientID = storeClientId();
 
 // Spotify module
