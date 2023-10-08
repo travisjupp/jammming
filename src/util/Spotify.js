@@ -1,5 +1,6 @@
 
-const redirectURI = 'http://localhost:3000/';
+// const redirectURI = 'http://localhost:3000/';
+const redirectURI = 'https://react-jammming-spotify.netlify.app/';
 let accessToken;
 const baseURL = 'https://api.spotify.com';
 
