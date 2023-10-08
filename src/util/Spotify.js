@@ -13,7 +13,7 @@ const baseURL = 'https://api.spotify.com';
 // Option 2: store clientID in localStorage
 const storeClientId = () => {
     // if localStorage id undefined prompt / store id
-    if (localStorage.getItem('clientID') === null){
+    if (!localStorage.getItem('clientID')){
         let clientID = prompt('Spotify API client ID?');
         localStorage.setItem('clientID', clientID)
     }
