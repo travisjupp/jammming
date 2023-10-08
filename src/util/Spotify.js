@@ -1,9 +1,24 @@
 
-import { clientIDval } from '../private/keys';
-const clientID = clientIDval;
 const redirectURI = 'http://localhost:3000/';
 let accessToken;
 const baseURL = 'https://api.spotify.com';
+
+// Two options for using Spotify API clientID
+
+// Option 1: import clientID from file
+// import { clientIDval } from '../private/keys';
+// const clientID = clientIDval;
+
+// Option 2: store clientID in localStorage
+const storeClientId = () => {
+    // if localStorage id undefined prompt / store id
+    if (localStorage.getItem('clientID') === null){
+        let clientID = prompt('Spotify API client ID?');
+        localStorage.setItem('clientID', clientID)
+    }
+    return localStorage.getItem('clientID');
+}
+const clientID = storeClientId();
 
 // Spotify module
 const Spotify = {
