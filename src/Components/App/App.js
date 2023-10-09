@@ -143,6 +143,10 @@ class App extends React.Component {
     newPlaylistTracks.splice(newTrackPostion, 0, track);
     this.setState({ playlistTracks: newPlaylistTracks });
   }
+// after component mounts get access token
+  componentDidMount() {
+    window.addEventListener('load', () => { Spotify.getAccessToken() });
+  }
 
   render() {
     return (
