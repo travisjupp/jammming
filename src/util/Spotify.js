@@ -1,26 +1,9 @@
 
-// const redirectURI = 'http://localhost:3000/';
+// const redirectURI = 'http://localhost:3000/'; // use this for local development mode
+const clientID = 'c76cb3963c544805bf457075575dc6f6';
 const redirectURI = 'https://react-jammming-spotify.netlify.app/';
 let accessToken;
 const baseURL = 'https://api.spotify.com';
-
-// Two options for using Spotify API clientID
-
-// Option 1: import clientID from file
-// import { clientIDval } from '../private/keys';
-// const clientID = clientIDval;
-
-// Option 2: store clientID in localStorage
-const storeClientId = () => {
-    // if localStorage id undefined prompt / store id
-    if (!localStorage.getItem('clientID')){
-        let clientID = prompt('Spotify API client ID?');
-        localStorage.setItem('clientID', clientID)
-    }
-    return localStorage.getItem('clientID');
-}
-// storeClientId();
-const clientID = storeClientId();
 
 // Spotify module
 const Spotify = {
@@ -36,6 +19,7 @@ const Spotify = {
         const tokenExpirationFromURL = window.location.href.match(/expires_in=([^&]*)/);
 
         if (accessTokenFromURL && tokenExpirationFromURL) {
+            console.log('getting token from URL...');
             accessToken = accessTokenFromURL[1];
             const tokenExpiration = Number(tokenExpirationFromURL[1]);
 
@@ -60,7 +44,9 @@ const Spotify = {
     // 85. In the Spotify object, add a method called search that accepts a parameter for the user’s search term.
     // .search() returns a promise that will eventually resolve to the list of tracks from the search.
     async search(term) {
-        const accessToken = Spotify.getAccessToken();
+        Spotify.getAccessToken();
+
+        console.log('searching...\n','accessToken',accessToken);
         try {
             let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
                         `, {
@@ -96,7 +82,7 @@ const Spotify = {
             console.log('savePlaylist params false, early return');
             return;
         }
-        let accessToken = Spotify.getAccessToken();
+        Spotify.getAccessToken();
         let headers = {
             'Authorization': 'Bearer ' + accessToken,
         }
@@ -157,24 +143,5 @@ const Spotify = {
         }
     }
 }
-
-// save access token, expiration from URL
-// this runs getAccessToken on first load and saves token/ sets timeout on redirect
-
-// if (window.location.href.match(/access_token=([^&]*)/)) {
-//     console.log('saving access token, expiration from URL...');
-//     accessToken = window.location.href.match(/access_token=([^&]*)/)[1]; // '<token>'
-//     const tokenExpiration = Number(window.location.href.match(/expires_in=([^&]*)/)[1]); // '3600'
-
-//     // set access token to expire and clear URL
-//     window.setTimeout(() => {
-//         accessToken = ''; // clear token
-//         // Spotify.getAccessToken(); // replace expired token
-//     }, tokenExpiration * 1000);
-//     window.history.pushState('Access Token', null, '/'); // clear URL
-// } else {
-//     console.log('Access token not in URL running getAccessToken...');
-//     Spotify.getAccessToken();
-// }
 
 export default Spotify;
