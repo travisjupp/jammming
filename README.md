@@ -1,74 +1,87 @@
-> Jammming project  
-> [project URL](https://www.codecademy.com/paths/front-end-engineer-career-path/tracks/fecp-22-react-part-ii/modules/wdcp-22-jammming/projects/jammming-prj)
+# Codecademy Front-End Engineer path Challenge Project: Jammming
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e2ba751a-e875-47a2-8548-ce95a591b877/deploy-status)](https://app.netlify.com/sites/react-jammming-spotify/deploys)
+
+## Description
+Jammming is a React application that lets a user search Spotify for audio tracks to create and save playlists to a Spotify account using the [Spotify Web API](https://developer.spotify.com/documentation/web-api).
+
+This app uses React class component methods to perform various tasks, stateful components hold search results and playlist information, and a Spotify utility module to handle endpoint requests.
+
+Live site: https://react-jammming-spotify.netlify.app/
 
 
-# Getting Started with Create React App
+## Setup Instructions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Setup necessary [Spotify Web API](https://developer.spotify.com/documentation/web-api) authorization credentials by creating an app on the [Spotify Dashboard](https://developer.spotify.com/dashboard)
 
-## Available Scripts
+For local development mode, check `Spotify.js` uses `redirectURI = 'http://localhost:3000/'` and the apps [Spotify Dashboard](https://developer.spotify.com/dashboard) configurations __redirect URI__ is also set to `'http://localhost:3000/'` 
 
-In the project directory, you can run:
+Run `npm install` to install dependencies.
 
-### `npm start`
+Start the server with `npm start` and visit http://localhost:3000/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Spotify Utility module
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The `Spotify` utility module is in charge of user authorization, track searches, and saving playlists using the following methods:
 
-### `npm test`
+* `getAccessToken()` authenticates users using [implicit grant flow](https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* `search()` searches for tracks by sending a GET request to the Spotify `/v1/search` API endpoint
 
-### `npm run build`
+* `savePlaylist()` saves custom playlists to a Spotify account by sending a GET request to `/v1/me`, then a POST request to the `/v1/users/<username>/playlists` Spotify API endpoints
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## State
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This application has two stateful components:  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The `App` component manages the applications __playlist name__ as a string and __playlist tracks__ as an array of track objects.
 
-### `npm run eject`
+```js
+// App.js
+playlistName: 'Custom PlaylistName',
+playlistTracks: [
+    // Track objects
+    {
+        name: 'Track01',
+        artist: 'Artist01',
+        album: 'Album01',
+        id: 'ID01',
+        uri: 'spotify:track:2YFtpiy2WoAQVQbM1SIwES'
+    },
+    {
+        name: 'Track02'...
+    }
+]
+```
+The `SearchBar` component holds the __search terms__ state as a string.
+```js
+// SearchBar.js
+searchTerm: 'search term'
+```
+## Components
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* App
+  * renders SearchBar, SearchResults, and Playlist components
+  * methods
+    * adding/removing tracks
+    * updating playlist name
+    * saving playlists
+    * searching for tracks
+    * moving playlist tracks
+  * holds playlist-name, playlist-tracks state
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Playlist
+  * renders a playlist using Tracklist component and an input for naming playlists
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* SearchBar
+  * renders an input field for searching tracks
+  * holds search-term state
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* SearchResults
+  * renders search results using Tracklist component
 
-## Learn More
+* TrackList
+  * renders a list of tracks using Track component
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Track
+  * renders individual tracks with track details and buttons for adding/removing/moving playlist tracks
