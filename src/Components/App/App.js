@@ -64,7 +64,7 @@ class App extends React.Component {
     this.moveTrackUp = this.moveTrackUp.bind(this);
     this.moveTrackDown = this.moveTrackDown.bind(this);
   }
-  // 41. add song to playlist state
+  // add song to playlist state
   addTrack(track) {
     // is current song in the playlistTracks state?
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
@@ -74,19 +74,19 @@ class App extends React.Component {
     // add track to end of playlistTracks
     this.setState({ playlistTracks: [...this.state.playlistTracks, track] });
   }
-  // 49. remove track from playlist state 
+  // remove track from playlist state 
   removeTrack(track) {
     // create new array with track removed
     let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
     // update state with new array
     this.setState({ playlistTracks: newPlaylistTracks });
   }
-  // 57. update playlist name
+  // update playlist name
   updatePlaylistName(name) {
     this.setState({ playlistName: name });
     console.log('playlistName:', this.state.playlistName);
   }
-  // 63. generate array of `uri` values called `trackURIs` from `playlistTracks`
+  // generate array of `uri` values called `trackURIs` from `playlistTracks`
   savePlaylist() {
     let trackURIs = this.state.playlistTracks.map(track => track.uri);
     // let trackURIs = this.state.playlistTracks.map(({uri}) => uri);
@@ -94,9 +94,9 @@ class App extends React.Component {
     console.log('trackURIs', trackURIs);
     console.log('playlistTracks', this.state.playlistTracks);
 
-    // 95. In App.js update the .savePlaylist() method to call Spotify.savePlaylist().
+    // update the .savePlaylist() method to call Spotify.savePlaylist().
 
-    // After you call Spotify.savePlaylist(), reset the state of playlistName to 'New Playlist' and playlistTracks to an empty array.
+    // after calling Spotify.savePlaylist(), reset the state of playlistName
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState(
       {
@@ -105,9 +105,9 @@ class App extends React.Component {
       }
     );
   }
-  // 67. accept a search term and log it to the console
+  // accept a search term and log it to the console
   search(searchTerm) {
-    // 88. Update the state of searchResults with the value resolved from Spotify.search()‘s promise
+    // Update the state of searchResults with the value resolved from Spotify.search()‘s promise
     Spotify.search(searchTerm)
       .then(searchResult => {
         if (searchResult === undefined) {
@@ -121,7 +121,7 @@ class App extends React.Component {
       .catch(error => { console.log(error) });
   }
 
-  // Move playlist tracks
+  // move playlist tracks
   moveTrackUp(track) {
     let origTrackPosition = this.state.playlistTracks.findIndex(currentTracks => currentTracks.id === track.id);
     let newPlaylistTracks = this.state.playlistTracks.filter(currentTracks => currentTracks.id !== track.id);
@@ -143,6 +143,7 @@ class App extends React.Component {
     newPlaylistTracks.splice(newTrackPostion, 0, track);
     this.setState({ playlistTracks: newPlaylistTracks });
   }
+  
 // after component mounts get access token
   componentDidMount() {
     window.addEventListener('load', () => { Spotify.getAccessToken() });

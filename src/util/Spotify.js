@@ -1,19 +1,17 @@
-
-// const redirectURI = 'http://localhost:3000/'; // use this for local development mode
 const clientID = 'c76cb3963c544805bf457075575dc6f6';
+// const redirectURI = 'http://localhost:3000/'; // use this for local development mode
 const redirectURI = 'https://react-jammming-spotify.netlify.app/';
 let accessToken;
 const baseURL = 'https://api.spotify.com';
 
-// Spotify module
+// Spotify utility module
 const Spotify = {
-    getAccessToken() { // 78. users access token set? return value if so
+    getAccessToken() {
+        // return token if set
         if (accessToken) {
             console.log('returning access token...');
-            console.log(accessToken);
             return accessToken;
         }
-        
         // build URL and get auth key
         const accessTokenFromURL = window.location.href.match(/access_token=([^&]*)/);
         const tokenExpirationFromURL = window.location.href.match(/expires_in=([^&]*)/);
@@ -41,12 +39,9 @@ const Spotify = {
             window.location = url; // redirects after this
         }
     },
-    // 85. In the Spotify object, add a method called search that accepts a parameter for the user’s search term.
-    // .search() returns a promise that will eventually resolve to the list of tracks from the search.
+    // search for tracks
     async search(term) {
         Spotify.getAccessToken();
-
-        console.log('searching...\n','accessToken',accessToken);
         try {
             let response = await fetch(`${baseURL}/v1/search?type=track&q=${term}
                         `, {
@@ -76,9 +71,10 @@ const Spotify = {
             console.log(e);
         }
     },
-    // 89. savePlaylist writes custom playlist to Spotify account
+    // write custom playlist to Spotify account
     async savePlaylist(playlistName, trackURIs) {
-        if (!(playlistName && trackURIs)) { // 90. check values are saved. if not, return
+        // check values are saved. if not, return
+        if (!(playlistName && trackURIs)) {
             console.log('savePlaylist params false, early return');
             return;
         }
@@ -86,7 +82,7 @@ const Spotify = {
         let headers = {
             'Authorization': 'Bearer ' + accessToken,
         }
-        // 92. request Spotify username. Convert the response to JSON and save the response id parameter to the user’s ID variable.
+        // request Spotify username, save the response id parameter to the user’s ID variable.
         let userID;
         try {
             let response = await fetch(`${baseURL}/v1/me`, { method: 'GET', headers: headers });
@@ -98,10 +94,7 @@ const Spotify = {
         } catch (e) {
             console.log(e);
         }
-        // 93. Use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
-        // Use the Spotify playlist endpoints to find a request that creates a new playlist.
-        // Set the playlist name to the value passed into the method.
-        // Convert the response to JSON and save the response id parameter to a variable called playlistID.
+        // use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
         let playlistID;
         try {
             let response = await fetch(`${baseURL}/v1/users/${userID}/playlists`, {
@@ -120,10 +113,7 @@ const Spotify = {
         } catch (e) {
             console.log(e);
         }
-        // 94. Use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
-        // Use the Spotify playlist endpoints to find a request that adds tracks to a playlist.
-        // Set the URIs parameter to an array of track URIs passed into the method.
-        // Convert the response to JSON and save the response id parameter to a variable called playlistID.
+        // use the returned user ID to make a POST request that creates a new playlist in the user’s account and returns a playlist ID.
         try {
             let response = await fetch(`${baseURL}/v1/playlists/${playlistID}/tracks`, {
                 method: 'POST',

@@ -9,7 +9,7 @@ export class Track extends React.Component {
         this.trackUp = this.trackUp.bind(this);
         this.trackDown = this.trackDown.bind(this);
     }
-    // 27. display add/remove button
+    // display add/remove button
     renderAction() {
         return (
             !this.props.isRemoval ?
@@ -29,19 +29,17 @@ export class Track extends React.Component {
                             <button className="Track-action" onClick={this.trackDown}>&darr;</button>
                             <button className="Track-action" onClick={this.removeTrack}> - </button>
                         </>
-
         )
     }
-    // 45. add this.props.track to the playlist.
+    // add this.props.track to the playlist.
     addTrack() {
         this.props.onAdd(this.props.track);
     }
-    // 53. remove this.props.track from the playlist.
+    // remove this.props.track from the playlist.
     removeTrack() {
         this.props.onRemove(this.props.track);
     }
-
-    // Move track handlers
+    // move track handlers
     trackUp() {
         this.props.onMoveUp(this.props.track);
     }
@@ -54,11 +52,10 @@ export class Track extends React.Component {
         return (
             <div className="Track">
                 <div className="Track-information">
-                    <h3>{this.props.track.name}{/* {<!-- track name will go here -->} */}</h3>
-                    <p>{this.props.track.artist} | {this.props.track.album}{/* <!-- track artist will go here--> | <!-- track album will go here --> */}</p>
+                    <h3>{this.props.track.name}</h3>
+                    <p>{this.props.track.artist} | {this.props.track.album}</p>
                 </div>
                 {this.renderAction()}
-                {/* <button className="Track-action"><!-- + or - will go here --></button> */}
             </div>
         );
     }
