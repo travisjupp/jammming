@@ -1,12 +1,27 @@
 #!/bin/bash
 # shell-script for accessing Spotify API endpoints
+# jq required -> https://jqlang.github.io/jq/download/
 
-# add client-id and client-secret to getAccessToken.sh
+
+# get access token (works for non-user authorized endpoints) by replacing $userID, $clientID, $clientSecret with your info found at https://developer.spotify.com/dashboard or save the info below to a file and source it
+userID=$userID
+clientID=$clientID
+clientSecret=$clientSecret
+
+accessToken=\
+$(curl -s -X POST "https://accounts.spotify.com/api/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=client_credentials&client_id=$clientID&client_secret=$clientSecret" \
+     | jq .access_token -r)
+
+# source getAccessToken.sh
 source ./src/private/getAccessToken.sh
 
-# to get a user authorized access token run: bash spotify.sh auth
-# then type `javascript:history.back();` into address bar to reveal access_token hash. This token is required to access private data through the Web API, such as user profiles and playlists, an application must get the user’s permission to access the data.
-userAuthAccessToken=
+# get a user-authorized access token (required for some endpoints)
+# ex: bash spotify.sh auth
+# then type (not paste) `javascript:history.back();` into address bar to reveal access_token hash. This token is required to access private data through the Web API, such as user profiles and playlists, an application must get the user’s permission to access the data. Replace $userAuthAccessToken below with the token you recieved (note this token has an expiration time)
+userAuthAccessToken=$userAuthAccessToken
+
 if [ "$1" = "auth" ]
 then
 echo "Running $1"
@@ -14,6 +29,7 @@ exec open https://accounts.spotify.com/authorize\?response_type\=token\&client_i
 fi
 
 # get recommendations
+# ex: bash spotify.sh getrecs -a 4NHQUGzhtTLFvgF5SZesLK
 if [ "$1" = "getrecs" ]
 then
 echo "Running $1"
@@ -43,7 +59,7 @@ then
 playlistName=$2
 playlistDesc=$3
 echo "Running $1"
-exec curl -H "Authorization: Bearer $accessToken" \
+exec curl -H "Authorization: Bearer $userAuthAccessToken" \
 -H "Content-Type: application/json" -d "{\"name\":\"$playlistName\",\"description\":\"$playlistDesc\"}" \
 https://api.spotify.com/v1/users/$userID/playlists
 
@@ -54,7 +70,7 @@ then
 playlistID=$2
 echo "Running $1"
 exec curl -X PUT https://api.spotify.com/v1/playlists/$playlistID/tracks\?uris\= \
--H "Authorization: Bearer $accessToken" \
+-H "Authorization: Bearer $userAuthAccessToken" \
 -H "Content-Type: application/json" \
 -d "{\"range_start\":$3,\"insert_before\":$4,\"range_length\":$5}"
 
@@ -65,16 +81,16 @@ then
     if [ "$2" = "-ids" ]
     then
     # save up to 180 playlist ids
-    curl -H "Authorization: Bearer $accessToken" \
+    curl -H "Authorization: Bearer $userAuthAccessToken" \
     https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=0\
     > infile.json;
-    curl -H "Authorization: Bearer $accessToken" \
+    curl -H "Authorization: Bearer $userAuthAccessToken" \
     https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=50\
     >> infile.json;
-    curl -H "Authorization: Bearer $accessToken" \
+    curl -H "Authorization: Bearer $userAuthAccessToken" \
     https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=100\
     >> infile.json;
-    curl -H "Authorization: Bearer $accessToken" \
+    curl -H "Authorization: Bearer $userAuthAccessToken" \
     https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=150\
     >> infile.json;
 
@@ -82,7 +98,7 @@ then
     cat playlistIds.json;
     
     else
-    exec curl -H "Authorization: Bearer $accessToken" \
+    exec curl -H "Authorization: Bearer $userAuthAccessToken" \
     https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=0 # 1-50
     # https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=50 # 51-100
     # https://api.spotify.com/v1/me/playlists\?limit\=50\&offset\=100 # 101-150
@@ -90,8 +106,7 @@ then
     fi
  
 # Get multiple playlist id's using jq -> https://stedolan.github.io/jq/
-# bash spotify.sh getplist > infile.json
-# jq -r '.items[range(0;19)].id' infile.json
+# ex: bash spotify.sh getplist | jq -r '.items[range(0;19)].id'
 
 # get audio features
 # ex: bash spotify.sh getaudiofeats 0LSLM0zuWRkEYemF7JcfEE,5CMjjywI0eZMixPeqNd75R,0DiWol3AO6WpXZgp0goxAV
@@ -106,7 +121,7 @@ https://api.spotify.com/v1/audio-features\
 elif [ "$1" = "getprofile" ]
 then
 echo "Running $1"
-exec curl -H "Authorization: Bearer $accessToken" \
+exec curl -H "Authorization: Bearer $userAuthAccessToken" \
 https://api.spotify.com/v1/me
 
 # get track
