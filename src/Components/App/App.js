@@ -105,7 +105,7 @@ class App extends React.Component {
       }
     );
   }
-  // accept a search term and log it to the console
+  // search for tracks and save results
   search(searchTerm) {
     // Update the state of searchResults with the value resolved from Spotify.search()‘s promise
     Spotify.search(searchTerm)

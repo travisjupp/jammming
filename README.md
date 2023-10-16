@@ -1,4 +1,4 @@
-# Codecademy Front-End Engineer path Challenge Project: Jammming
+# Challenge Project: Jammming
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e2ba751a-e875-47a2-8548-ce95a591b877/deploy-status)](https://app.netlify.com/sites/react-jammming-spotify/deploys)
 
@@ -29,24 +29,25 @@ Run `npm install` to install dependencies.
 Start the server with `npm start` and visit http://localhost:3000/
 
 ## Spotify utility module
-    src/util/Spotify.js
+[src/util/Spotify.js](./src/util/Spotify.js)
 
-The `Spotify` utility module is handles user authorization, track searches, and saving playlists
+The `Spotify` utility module handles user authorization, track searches, and saving playlists
 
 | Method name | Parameters | Description |
 | ----------- | ----------- | ----------- |
-| `getAccessToken()` | none | Authenticates users using [implicit grant flow](https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow) |
-| `search()`  | term string | Searches for tracks by sending a GET request to the Spotify `/v1/search` API endpoint |
+| `getAccessToken()` | none | Authenticates users using Spotify API's [implicit grant flow](https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow) and returns an access token |
+| `search()`  | term string | Searches for tracks by sending a GET request to the Spotify `/v1/search` API endpoint and returns an array of track objects |
 | `savePlaylist()` | name string, track URI's array | Saves custom playlists to a Spotify account by sending a GET request to `/v1/me`, then a POST request to the `/v1/users/<username>/playlists` Spotify API endpoints
 
 ## State
 
 This application has two stateful components:  
 
-The `App` component manages the applications __search results__, __playlist name__, and __playlist tracks__
+The `App` component manages the applications __search results__, __playlist name__, and __playlist tracks__:
 
 ```js
 // App.js
+...
 searchResults: [
     // Search objects
     {
@@ -73,8 +74,9 @@ playlistTracks: [
         name: 'Track02'...
     }
 ]
+...
 ```
-The `SearchBar` component holds the __search terms__ state as a string.
+The `SearchBar` component holds the __search terms__ state as a string:
 ```js
 // SearchBar.js
 searchTerm: 'search term'
@@ -82,7 +84,7 @@ searchTerm: 'search term'
 ## Components
 
 ### `App`
-    src/Components/App/App.js
+[src/Components/App/App.js](./src/Components/App/App.js)
 
 Renders `SearchBar`, `SearchResults`, and `Playlist` components
 
@@ -103,7 +105,7 @@ Holds playlist-name, playlist-tracks state
 
 
 ### `Playlist`
-    src/Components/Playlist/Playlist.js
+[src/Components/Playlist/Playlist.js](./src/Components/Playlist/Playlist.js)
 
 Renders a playlist using `Tracklist` component and an input for naming playlists
 
@@ -118,9 +120,9 @@ Renders a playlist using `Tracklist` component and an input for naming playlists
 | `onMoveDown()` | method | Move track object down |
 
 
-
 ### `SearchBar`
-    src/Components/SearchBar/SearchBar.js
+[src/Components/SearchBar/SearchBar.js](./src/Components/SearchBar/SearchBar.js)
+
 Renders an input field for searching tracks
 
 #### PROPS
@@ -131,8 +133,9 @@ Renders an input field for searching tracks
 #### STATE
 Holds search-term state
 
+
 ### `SearchResults`
-    src/Components/SearchResults/SearchResults.js
+[src/Components/SearchResults/SearchResults.js](./src/Components/SearchResults/SearchResults.js)
 
 Renders search results using `Tracklist` component
 
@@ -142,8 +145,9 @@ Renders search results using `Tracklist` component
 | `searchResults` | array | Array of search results |
 | `onAdd()` | method | Add track to playlist tracks |
 
+
 ### `TrackList`
-    src/Components/TrackList/TrackList.js
+[src/Components/TrackList/TrackList.js](./src/Components/TrackList/TrackList.js)
 
 Renders a list of tracks using `Track` component
 
@@ -157,8 +161,9 @@ Renders a list of tracks using `Track` component
 | `onMoveUp()` | method |  Move track object up |
 | `onMoveDown()` | method |  Move track object down |
 
+
 ### `Track`
-    src/Components/Track/Track.js
+[src/Components/Track/Track.js](./src/Components/Track/Track.js)
 
 Renders individual tracks with track details and buttons for adding/removing/moving playlist tracks
 
@@ -176,8 +181,8 @@ Renders individual tracks with track details and buttons for adding/removing/mov
 
 
 
-
 ## Extras
 
 ### Spotify API script
-`spotify.sh` shell-script for accessing Spotify API endpoints
+
+Access Spotify API endpoints with [spotify.sh](./spotify.sh)
