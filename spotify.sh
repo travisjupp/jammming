@@ -118,6 +118,7 @@ https://api.spotify.com/v1/audio-features\
 ?ids\=$2
 
 # get profile
+# ex: bash spotify.sh getprofile
 elif [ "$1" = "getprofile" ]
 then
 echo "Running $1"
