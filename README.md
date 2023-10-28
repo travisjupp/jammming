@@ -11,7 +11,7 @@ This Challenge Project is a part of the CodeCademy Front-End Engineer path, more
 
 Live site: https://react-jammming-spotify.netlify.app/
 
-## Technologies
+## Technologies used
 
 * `react` v. 18.2.0
 * `react-dom` v. 18.2.0
